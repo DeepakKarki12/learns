@@ -170,7 +170,10 @@ app.get("/backend/home/login",jsonParser, async (req,res)=>{
     console.log("request",req.body)
     // return res.redirect('/login_screen');
     const pathOffile = path.join(__dirname,"frontend/")
-    return res.sendFile("loginpagefromsonet.html",{root : pathOffile})
+    return res.status(200).json({ 
+        success: true, 
+        message: ` successfully logged in`
+    });
     // return res.send("trip table testing")
 })
 app.get("/login_screen",jsonParser, async (req,res)=>{
@@ -208,6 +211,12 @@ app.get("/",jsonParser, async (req,res)=>{
     
 //     // return res.send("trip table testing")
 // })
+
+app.get('/loginpagefromsonet', (req, res) => {
+    console.log("tripdata api")
+    const pathOfFile = path.join(__dirname, "frontend", "loginpagefromsonet.html");
+    return res.sendFile(pathOfFile);
+});
 app.get('/trip_data', (req, res) => {
     console.log("tripdata api")
     const pathOfFile = path.join(__dirname, "frontend", "trip_data.html");

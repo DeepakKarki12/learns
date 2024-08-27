@@ -85,19 +85,19 @@
             };
             
             // console.log(obj)
-            fetch("/backend/home/login")
-            .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            // Assuming the API returns HTML content
-            return response.text();
+            fetch("/backend/home/login", {
+                method: 'GET'
             })
-            .then(htmlContent => {
-                // Replace the current screen with the HTML content
-                document.open();
-                document.write(htmlContent);
-                document.close();
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Login successful:', data.message);
+                    // Redirect to trip data page
+                    window.location.href = '/loginpagefromsonet';
+                } else {
+                    // Display error message
+                    document.getElementById('errorMessage').textContent = data.message;
+                }
             })
             .catch(error => {
                 // Handle any errors that occur during the fetch
@@ -106,7 +106,7 @@
 
             });            
             });
-            
+
 
     </script>
 
