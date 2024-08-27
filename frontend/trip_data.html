@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Routes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .travel-routes-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .create-trip-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .create-trip-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .create-trip-button:hover {
+            background-color: #45a049;
+        }
+        .routes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .route-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .route-card:hover {
+            transform: translateY(-5px);
+        }
+        .route-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .route-from, .route-to {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        .route-from i, .route-to i {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .route-from i {
+            color: #4CAF50;
+        }
+        .route-to i {
+            color: #F44336;
+        }
+        .route-arrow {
+            font-size: 1.5rem;
+            color: #2196F3;
+        }
+        .join-button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .join-button:hover {
+            background-color: #1976D2;
+        }
+        @media (max-width: 600px) {
+            .routes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="travel-routes-container">
+        <h1>Travel Routes</h1>
+        <div class="create-trip-container">
+            <button class="create-trip-button">Create Trip</button>
+        </div>
+        <div class="routes-grid" id="routesContainer"></div>
+    </div>
+
+    <script>
+        const routesData = [
+            {
+                "id": 1,
+                "From": "Haldwani",
+                "To": "Haridwar",
+                "userId": 2
+            },
+            {
+                "id": 2,
+                "From": "Haldwani",
+                "To": "Gadarpur",
+                "userId": 2
+            },
+            {
+                "id": 3,
+                "From": "Gadarpur",
+                "To": "Dubai",
+                "userId": 1
+            },
+            {
+                "id": 4,
+                "From": "haldwani",
+                "To": "Rishikesh",
+                "userId": 2
+            },
+            {
+                "id": 5,
+                "From": "Haldwani",
+                "To": "Kedarnath",
+                "userId": 3
+            }
+        ];
+
+        const routesContainer = document.getElementById('routesContainer');
+
+        routesData.forEach(route => {
+            const routeCard = document.createElement('div');
+            routeCard.className = 'route-card';
+            routeCard.innerHTML = `
+                <div class="route-info">
+                    <div class="route-from">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${route.From}</span>
+                    </div>
+                    <div class="route-arrow">
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                    </div>
+                    <div class="route-to">
+                        <i class="fas fa-flag-checkered"></i>
+                        <span>${route.To}</span>
+                    </div>
+                </div>
+                <button class="join-button">Join</button>
+            `;
+            routesContainer.appendChild(routeCard);
+        });
+    </script>
+</body>
+</html>
