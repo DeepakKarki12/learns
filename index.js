@@ -114,11 +114,11 @@ app.post("/create",jsonParser, async (req,res)=>{
 app.post("/login", jsonParser, async (req, res) => {
     console.log("loging")
     try {
-        const { userId, password } = req.body;
+        // const { userId, password } = req.body;
         
-        if (!userId || !password) {
-            return res.status(400).json({ success: false, message: "User ID and password are required" });
-        }
+        // if (!userId || !password) {
+        //     return res.status(400).json({ success: false, message: "User ID and password are required" });
+        // }
         const oneUser = {name:"Deepak karki"}
         // const oneUser = await prisma.User.findUnique({
         //     where: {
@@ -170,10 +170,7 @@ app.get("/backend/home/login",jsonParser, async (req,res)=>{
     console.log("request",req.body)
     // return res.redirect('/login_screen');
     const pathOffile = path.join(__dirname,"frontend/")
-    return res.status(200).json({ 
-        success: true, 
-        message: ` successfully logged in`
-    });
+    return res.sendFile("loginpagefromsonet.html",{root : pathOffile})
     // return res.send("trip table testing")
 })
 app.get("/login_screen",jsonParser, async (req,res)=>{
@@ -211,16 +208,15 @@ app.get("/",jsonParser, async (req,res)=>{
     
 //     // return res.send("trip table testing")
 // })
-
-app.get('/loginpagefromsonet', (req, res) => {
-    console.log("tripdata api")
+app.get('/loginpage', (req, res) => {
+    console.log("tripdata")
     const pathOfFile = path.join(__dirname, "frontend", "loginpagefromsonet.html");
     return res.sendFile(pathOfFile);
 });
 app.get('/trip_data', (req, res) => {
-    console.log("tripdata api")
+    console.log("tripdata")
     const pathOfFile = path.join(__dirname, "frontend", "trip_data.html");
     return res.sendFile(pathOfFile);
 });
 
-app.listen(9000,console.log("working on port 5500"))
+app.listen(5500,console.log("working on port 5500"))
