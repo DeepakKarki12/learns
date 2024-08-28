@@ -141,7 +141,8 @@ app.post("/login", jsonParser, async (req, res) => {
     console.log("loging")
     try {
         const { userId, password } = req.body;
-        
+        console.log("res body",req.body)
+        console.log("name pass",userId,password)
         if (!userId || !password) {
             return res.status(400).json({ success: false, message: "User ID and password are required" });
         }
