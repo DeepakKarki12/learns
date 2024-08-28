@@ -6,8 +6,12 @@ import prismaClient from "@prisma/client"
 import mongoose from "mongoose";
 import RegisterModel from "./Models/Register.js"
 import cors from 'cors'
+import dotenv from 'dotenv'
 
-mongoose.connect('mongodb+srv://indianarmypara9826:1234@cluster0.ll1b6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+dotenv.config();
+
+const ATLAS_URL = process.env.ATLAS_URL
+mongoose.connect(ATLAS_URL)
 
 // // Convert import.meta.url to a file path
 const __filename = fileURLToPath(import.meta.url);
