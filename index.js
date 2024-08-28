@@ -14,7 +14,7 @@ dotenv.config();
 const ATLAS_URL = process.env.ATLAS_URL
 mongoose.connect(ATLAS_URL)
 
-// // Convert import.meta.url to a file path
+// // Convert import.meta.url to a file path    
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -84,7 +84,7 @@ app.get("/home",jsonParser, async (req,res)=>{
 
 app.post("/create",jsonParser, async (req,res)=>{
     const data = req.body
-    console.log("request",data)
+    console.log("request---------------->",data)
     const newUser = await RegisterModel.create(data)
     console.log("newuser",newUser)
     
@@ -94,6 +94,8 @@ app.post("/create",jsonParser, async (req,res)=>{
         message: ` successfully logged in`
     });
 })
+
+// referer:https://vercel.com/deepakkarki12s-projects/qaenvironment
 
 // app.get("/getall",jsonParser, async (req,res)=>{    
 //     const allUser = await prisma.User.findMany()
@@ -238,7 +240,7 @@ app.get("/",jsonParser, async (req,res)=>{
 //     // return res.send("trip table testing")
 // })
 app.get('/loginpage', (req, res) => {
-    console.log("tripdata")
+    console.log("login page")
     const pathOfFile = path.join(__dirname, "frontend", "loginpagefromsonet.html");
     return res.sendFile(pathOfFile);
 });

@@ -81,32 +81,31 @@
         };
 
         // Login button click
-        document.querySelector(".login").addEventListener("click", function() {
-            // For demonstration, we're using static credentials. In a real app, you'd want to get these from input fields.
-            var username = "hello";
-            var password = "world";
-            loginUser(username, password);
+        document.querySelector(".login").addEventListener("click", ()=> {
+            // For demonstration, we're using static credentials. In a real app, you'd want to get these from input fields
+            loginUser();
         });
 
-        function loginUser(username, password) {
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Login successful:', data.message);
-                    // Redirect to trip data page
-                    window.location.href = '/loginpage';
-                } else {
-                    // Display error message
-                    document.getElementById('errorMessage').textContent = data.message;
+        function loginUser() {
+            console.log("function hiit")
+            fetch('/loginpage')
+            .then( data => {
+                window.location.href = '/loginpage'
                 }
-            })
+            )
+            
+
+            // .then(response => response.json())
+            // .then(data => {
+            //     if (data.success) {
+            //         console.log('Login successful:', data.message);
+            //         // Redirect to trip data page
+            //         window.location.href = '/loginpage';
+            //     } else {
+            //         // Display error message
+            //         document.getElementById('errorMessage').textContent = data.message;
+            //     }
+            // })
             .catch(error => {
                 console.error('Error:', error);
                 document.getElementById('errorMessage').textContent = 'An error occurred during login. Please try again.';
