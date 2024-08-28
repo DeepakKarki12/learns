@@ -2,6 +2,11 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from 'url';
 import bodyParser from "body-parser";
+import prismaClient from "@prisma/client"
+import mongoose from "mongoose";
+import RegisterModel from "./Models/Register.js"
+
+mongoose.connect('mongodb+srv://indianarmypara9826:1234@cluster0.ll1b6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
 // // Convert import.meta.url to a file path
 const __filename = fileURLToPath(import.meta.url);
@@ -35,7 +40,7 @@ const __dirname = path.dirname(__filename);
 // const prismaClient = require("@prisma/client")
 // const express = require("express")
 // const bodyParser = require("body-parser")
-// const prisma = new prismaClient.PrismaClient()
+const prisma = new prismaClient.PrismaClient()
 // const path = require("path")
 
 const app = express()
@@ -60,12 +65,11 @@ app.get("/home",jsonParser, async (req,res)=>{
     return res.json(newUser)
 })
 app.post("/create",jsonParser, async (req,res)=>{
-    console.log("request",req.body)
-    // const newUser = await prisma.User.create({
-    // data : req.body
-        
-    // })
-    // console.log("newuser",newUser)
+    
+    const data = req.body
+    console.log("request",data)
+    const newUser = await RegisterModel.create(data)
+    console.log("newuser",newUser)
     
     
     return res.send("successfully registered")

@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+// npx prisma migrate dev --name dbentery
+//website for crud :- https://www.prisma.io/docs/orm/prisma-client/queries/crud
+
+
+
+//"host": "localhost",
+//  "masterhost": "Servers",
+ //   "dialect": "postgres",
+//    "database": "postgres",
+//    "username": "postgres",
+//    "password": "880316Laptop.d826",
+//  "maxreconnect": 999,
+//    "port":5432,
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String
+  phone Int     @unique 
+  userId  String @unique
+  password String
+  Create_trip Create_trip[]
+
+}
+
+model Create_trip {
+  id        Int     @id @default(autoincrement())
+  From      String  
+  To        String
+  userId    Int     
+  user      User    @relation(fields: [userId], references: [id])
+  
+}
