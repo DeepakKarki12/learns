@@ -11,7 +11,7 @@ import dotenv from 'dotenv'
 
 dotenv.config();
 
-const ATLAS_URL = process.env.ATLAS_UR
+const ATLAS_URL = process.env.ATLAS_URL
 mongoose.connect(ATLAS_URL)
 
 // // Convert import.meta.url to a file path
