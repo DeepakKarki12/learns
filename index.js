@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import RegisterModel from "./Models/Register.js"
 import cors from 'cors'
 import dotenv from 'dotenv'
+import https from 'https'
 
 dotenv.config();
 
@@ -52,13 +53,13 @@ const __dirname = path.dirname(__filename);
 // const path = require("path")
 
 const app = express()
-// app.use(cors(
-//     {
-//         origin: ["https://deploy-mern-frontend.vercel.app"],
-//         methods: ["POST", "GET"],
-//         credentials: true
-//     }
-// ));
+app.use(cors(
+    {
+        origin: ["localhost:5500"],
+        methods: ["POST", "GET"],
+        credentials: true
+    }
+));
 app.use(express.json())
 
 
@@ -79,16 +80,19 @@ const jsonParser = bodyParser.json()
 app.get("/home",jsonParser, async (req,res)=>{
         
     return res.json(newUser)
-})
+});
+
 app.post("/create",jsonParser, async (req,res)=>{
-    
     const data = req.body
     console.log("request",data)
     const newUser = await RegisterModel.create(data)
     console.log("newuser",newUser)
     
     
-    return res.send("successfully registered")
+    return res.status(200).json({ 
+        success: true, 
+        message: ` successfully logged in`
+    });
 })
 
 // app.get("/getall",jsonParser, async (req,res)=>{    
@@ -134,27 +138,32 @@ app.post("/create",jsonParser, async (req,res)=>{
 app.post("/login", jsonParser, async (req, res) => {
     console.log("loging")
     try {
-        // const { userId, password } = req.body;
+        const { userId, password } = req.body;
         
-        // if (!userId || !password) {
-        //     return res.status(400).json({ success: false, message: "User ID and password are required" });
-        // }
-        const oneUser = {name:"Deepak karki"}
-        // const oneUser = await prisma.User.findUnique({
-        //     where: {
-        //         userId: userId,
-        //         password: password
-        //     }
-        // });
+        if (!userId || !password) {
+            return res.status(400).json({ success: false, message: "User ID and password are required" });
+        }
+        // const oneUser = {name:"Deepak karki"}
+        console.log("send",userId,password)
+        await RegisterModel.findOne({name:userId,password:password})
+        .then (user =>{
+            console.log("user",user)
+            if(user){
+            console.log("successfully find")
+            return res.status(200).json({ 
+                success: true, 
+                message: ` successfully logged in`
+                 })
+            }
 
-        // if (!oneUser) {
-        //     return res.status(401).json({ success: false, message: "Invalid credentials" });
-        // }
+        
+        return res.status(401).json({ success: false, message: "Invalid credentials" });
+        
 
-        // You might want to implement proper session management or JWT here
-        return res.status(200).json({ 
-            success: true, 
-            message: `${oneUser.name} successfully logged in`
+        // // You might want to implement proper session management or JWT here
+        // return res.status(200).json({ 
+        //     success: true, 
+        //     message: `${oneUser.name} successfully logged in`
         });
     } catch (error) {
         console.error("Login error:", error);
@@ -239,4 +248,11 @@ app.get('/trip_data', (req, res) => {
     return res.sendFile(pathOfFile);
 });
 
-app.listen(5500,console.log("working on port 5500"))
+
+
+// const httpserver = https.createServer(app)
+
+// httpserver.listen(5000,"0.0.0.0",()=>{
+//     console.log("working on port 5500")
+// })
+app.listen(5500,()=>{console.log("working on port 5500")})

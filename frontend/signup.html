@@ -48,19 +48,27 @@
                 phone: document.querySelector(".three").value,
                 username: document.querySelector(".four").value,
                 password: document.querySelector(".five").value
-            };
 
+                
+            };
+            signupuser(obj);
+
+        });
+        function signupuser(object){
+            console.log("object",object)
             fetch("/create", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
                 },
-                body: JSON.stringify(obj)
+                body: JSON.stringify(object)
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     console.log('Registration successful:', data.message);
+                    window.location.href = '/loginpage';
+
                     // Optionally, redirect to login page or show success message
                 } else {
                     document.getElementById('errorMessage').textContent = data.message;
@@ -70,7 +78,7 @@
                 console.error('Error:', error);
                 document.getElementById('errorMessage').textContent = 'An error occurred during registration. Please try again.';
             });
-        });
+        };
 
         // Login button click
         document.querySelector(".login").addEventListener("click", function() {
