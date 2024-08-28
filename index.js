@@ -5,12 +5,16 @@ import bodyParser from "body-parser";
 import prismaClient from "@prisma/client"
 import mongoose from "mongoose";
 import RegisterModel from "./Models/Register.js"
+import cors from 'cors'
 
 mongoose.connect('mongodb+srv://indianarmypara9826:1234@cluster0.ll1b6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
 // // Convert import.meta.url to a file path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+
 
 // const app = express()
 // const jsonParser = bodyParser.json()
@@ -44,6 +48,14 @@ const prisma = new prismaClient.PrismaClient()
 // const path = require("path")
 
 const app = express()
+app.use(cors(
+    {
+        origin: ["https://deploy-mern-frontend.vercel.app"],
+        methods: ["POST", "GET"],
+        credentials: true
+    }
+));
+app.use(express.json())
 
 
 
