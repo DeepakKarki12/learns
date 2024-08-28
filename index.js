@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import RegisterModel from "./Models/Register.js"
 import cors from 'cors'
 import dotenv from 'dotenv'
-import https from 'https'
+// import https from 'https'
 
 dotenv.config();
 
@@ -55,7 +55,7 @@ const __dirname = path.dirname(__filename);
 const app = express()
 app.use(cors(
     {
-        origin: ["localhost:5500"],
+        origin: ["https://qaenvironment.vercel.app/"],
         methods: ["POST", "GET"],
         credentials: true
     }
