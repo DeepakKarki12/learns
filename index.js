@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from 'url';
 import bodyParser from "body-parser";
-import prismaClient from "@prisma/client"
+// import prismaClient from "@prisma/client"
 import mongoose from "mongoose";
 import RegisterModel from "./Models/Register.js"
 import cors from 'cors'
@@ -48,17 +48,17 @@ const __dirname = path.dirname(__filename);
 // const prismaClient = require("@prisma/client")
 // const express = require("express")
 // const bodyParser = require("body-parser")
-const prisma = new prismaClient.PrismaClient()
+// const prisma = new prismaClient.PrismaClient()
 // const path = require("path")
 
 const app = express()
-app.use(cors(
-    {
-        origin: ["https://deploy-mern-frontend.vercel.app"],
-        methods: ["POST", "GET"],
-        credentials: true
-    }
-));
+// app.use(cors(
+//     {
+//         origin: ["https://deploy-mern-frontend.vercel.app"],
+//         methods: ["POST", "GET"],
+//         credentials: true
+//     }
+// ));
 app.use(express.json())
 
 
