@@ -4,9 +4,12 @@ import { fileURLToPath } from 'url';
 import bodyParser from "body-parser";
 // import prismaClient from "@prisma/client"
 import mongoose from "mongoose";
-import RegisterModel from "./Models/Register.js"
+import {RegisterModel,tripModel} from "./Models/Register.js"
 import cors from 'cors'
 import dotenv from 'dotenv'
+import jwt from 'jsonwebtoken'
+import authenticateToken from "./controller/tokenauth.js";
+import generateKey from "./controller/generateSecretKey.js";
 // import https from 'https'
 
 dotenv.config();
@@ -85,14 +88,22 @@ app.get("/home",jsonParser, async (req,res)=>{
 app.post("/create",jsonParser, async (req,res)=>{
     const data = req.body
     console.log("request---------------->",data)
-    const newUser = await RegisterModel.create(data)
-    console.log("newuser",newUser)
-    
-    
-    return res.status(200).json({ 
+    const check = await RegisterModel.findOne({email:data.email})
+    console.log("check----------->",check)
+    if(check){
+        return res.status(400).json({
+            message:"user already exits"
+        })
+    }else{
+        const newUser = await RegisterModel.create(data)
+        console.log("newuser",newUser)
+        const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+        console.log("token generated",token)
+        return res.status(200).json({ 
         success: true, 
-        message: ` successfully logged in`
-    });
+        message: ` ${token}successfully logged in`
+        });
+    }
 })
 
 // referer:https://vercel.com/deepakkarki12s-projects/qaenvironment
@@ -139,6 +150,8 @@ app.post("/create",jsonParser, async (req,res)=>{
 // })
 app.post("/login", jsonParser, async (req, res) => {
     console.log("loging")
+    const key = generateKey();
+    console.log("key",key)
     try {
         const { userId, password } = req.body;
         console.log("res body",req.body)
@@ -153,9 +166,13 @@ app.post("/login", jsonParser, async (req, res) => {
             console.log("user",user)
             if(user){
             console.log("successfully find")
+            const token = jwt.sign({ userId: user.email },key, { expiresIn: '1h' });
             return res.status(200).json({ 
                 success: true, 
-                message: ` successfully logged in`
+                message: `${key} successfully logged in`,
+                token:token,
+                key:key,
+                user:user
                  })
             }
 
@@ -245,11 +262,37 @@ app.get('/loginpage', (req, res) => {
     const pathOfFile = path.join(__dirname, "frontend", "loginpagefromsonet.html");
     return res.sendFile(pathOfFile);
 });
-app.get('/trip_data', (req, res) => {
+app.post('/trip_data_auth',authenticateToken, (req, res) => {
     console.log("tripdata")
-    const pathOfFile = path.join(__dirname, "frontend", "trip_data.html");
-    return res.sendFile(pathOfFile);
+    console.log("payload auth---->",req.body)
+   
+    return res.status(200).json({success:true,message:"success auth heading towards trip data",user:req.body.payload.user})
+
 });
+
+app.get('/trip_data', async (req, res) => {
+    console.log("tripdata",req.query.id)
+    try{
+    await RegisterModel.findOne({email:req.query.id})
+    .then (userData =>{
+        if (userData){
+        console.log("payload trip---->",userData)
+        const pathOfFile = path.join(__dirname, "frontend", "trip_data.html");
+        return res.sendFile(pathOfFile);
+
+        }else{
+        const pathOfFile = path.join(__dirname, "frontend", "loginpagefromsonet.html");
+        return res.sendFile(pathOfFile);
+        }
+        })
+
+    }catch (error) {
+        console.log("error")
+        res.status(500).send("trip_data route")
+    }
+    
+});
+
 
 
 

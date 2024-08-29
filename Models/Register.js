@@ -1,16 +1,22 @@
 import mongoose  from "mongoose";
 
-const RegisterSchema = new mongoose.Schema({
-
-    id  : Number,
-    email: String,
+const userSchema = new mongoose.Schema({
+    email: {type:String,unique:true},
     name: String,
     phone: Number,
     password: String
+
+})
+const tripSchema = new mongoose.Schema({
+    from:String,
+    to:String,
+    userdata:{type:Object,ref:'User'}
+
 })
 
-const RegisterModel = mongoose.model("register", RegisterSchema);
-export default RegisterModel;
+const RegisterModel = mongoose.model("User", userSchema);
+const tripModel = mongoose.model("trip", userSchema);
+export  {RegisterModel,tripModel};
     
 
 

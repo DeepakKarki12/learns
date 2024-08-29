@@ -124,13 +124,48 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        console.log("response ok")
-                        window.location.href = '/trip_data';
+                        console.log("response ok")     
+                        return response.json()                   
                     } else {
                         alert('Invalid credentials, please try again.');
                     }
+                }).then(payload =>{
+
+                    console.log("payload",payload.token.substring(2,5))
+                    localStorage.setItem('token', payload.token);
+                    localStorage.setItem('key', payload.key);
+                    localStorage.setItem('userParams', payload.token.substring(2,5));
+
+                    // localStorage.setItem('params', `${payload.key[0]}`);
+                    console.log("local storage set")
+                    return fetch("/trip_data_auth",{
+                        method:"POST",
+                        headers: {
+                            "content-type":"application/json",
+                            "Authorization": payload.token
+                        },
+                        body:JSON.stringify({payload})
+                    });
+                })
+                .then(after_auth => {
+                    if (after_auth.ok){
+                        return after_auth.json()
+                        
+                    } else {
+                        console.log("after auth",after_auth)
+                        throw new Error('Failed to access /trip_data.');
+                    }
+                    
+                })
+                .then(parsedObj =>{                    
+                console.log("Accessed /trip_data successfully",parsedObj.user.email);                                   
+                const params = localStorage.getItem('currentUser')                   
+                window.location.href = `/trip_data?id=${params}`; 
 
                 })
+                
+
+                
             }
                 
             </script>
