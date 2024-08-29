@@ -135,6 +135,7 @@
                     localStorage.setItem('token', payload.token);
                     localStorage.setItem('key', payload.key);
                     localStorage.setItem('userParams', payload.token.substring(2,5));
+                    localStorage.setItem('currentUser', payload.user.email);
 
                     // localStorage.setItem('params', `${payload.key[0]}`);
                     console.log("local storage set")
